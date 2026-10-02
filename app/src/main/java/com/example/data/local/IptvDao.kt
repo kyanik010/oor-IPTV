@@ -30,6 +30,21 @@ interface IptvDao {
     @Query("DELETE FROM accounts")
     suspend fun clearAccounts()
 
+    @Query("DELETE FROM categories")
+    suspend fun clearCategories()
+
+    @Query("DELETE FROM channels")
+    suspend fun clearAllChannels()
+
+    @Query("DELETE FROM movies")
+    suspend fun clearAllMovies()
+
+    @Query("DELETE FROM series")
+    suspend fun clearAllSeries()
+
+    @Query("DELETE FROM episodes")
+    suspend fun clearAllEpisodes()
+
     // --- Profiles ---
     @Query("SELECT * FROM profiles")
     fun getAllProfiles(): Flow<List<ProfileEntity>>
