@@ -2,7 +2,6 @@ package com.example.data.remote
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.squareup.moshi.JsonElement
 
 @JsonClass(generateAdapter = true)
 data class XtreamAuthResponse(
@@ -53,7 +52,7 @@ data class XtreamVodStream(
     @Json(name = "stream_type") val streamType: String? = "movie",
     @Json(name = "stream_id") val streamId: Int,
     @Json(name = "stream_icon") val streamIcon: String?,
-    @Json(name = "rating") val rating: JsonElement? = null,
+    @Json(name = "rating") val rating: Double? = 0.0,
     @Json(name = "category_id") val categoryId: String?,
     @Json(name = "container_extension") val containerExtension: String? = "mp4",
     @Json(name = "releasedate") val releaseDate: String? = null,
