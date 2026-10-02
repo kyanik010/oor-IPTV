@@ -137,7 +137,8 @@ class IptvRepository(context: Context) {
                 dao.clearAccounts()
                 dao.insertAccount(account)
 
-                // Fetch categories and initial channels
+                // Replace any previous/demo content with the authenticated Xtream subscription.
+                clearContent()
                 syncXtreamContent(formattedServer, user, pass)
                 Result.success(Unit)
             } else {
@@ -163,6 +164,7 @@ class IptvRepository(context: Context) {
 
             dao.clearAccounts()
             dao.insertAccount(account)
+            clearContent()
 
             // Insert into Room
             dao.insertCategories(parsed.categories)
@@ -176,28 +178,41 @@ class IptvRepository(context: Context) {
         }
     }
 
+    private suspend fun clearContent() {
+        dao.clearCategories()
+        dao.clearAllChannels()
+        dao.clearAllMovies()
+        dao.clearAllSeries()
+        dao.clearAllEpisodes()
+    }
+
+    private fun jsonNumber(element: com.squareup.moshi.JsonElement?): Double {
+        return element?.toString()?.trim('"')?.toDoubleOrNull() ?: 0.0
+    }
+
     private suspend fun syncXtreamContent(server: String, user: String, pass: String) {
         val playerApiUrl = "${server}player_api.php"
-        try {
-            val liveCats = xtreamApi.getLiveCategories(playerApiUrl, user, pass)
-            val vodCats = xtreamApi.getVodCategories(playerApiUrl, user, pass)
-            val seriesCats = xtreamApi.getSeriesCategories(playerApiUrl, user, pass)
 
-            val catEntities = ArrayList<CategoryEntity>()
+        val liveCats = xtreamApi.getLiveCategories(playerApiUrl, user, pass)
+        val vodCats = xtreamApi.getVodCategories(playerApiUrl, user, pass)
+        val seriesCats = xtreamApi.getSeriesCategories(playerApiUrl, user, pass)
+
+        val catEntities = buildList {
             liveCats.forEach {
-                catEntities.add(CategoryEntity(it.categoryId, it.categoryName, it.parentId, ContentType.LIVE))
+                add(CategoryEntity(it.categoryId, it.categoryName, it.parentId, ContentType.LIVE))
             }
             vodCats.forEach {
-                catEntities.add(CategoryEntity(it.categoryId, it.categoryName, it.parentId, ContentType.MOVIE))
+                add(CategoryEntity(it.categoryId, it.categoryName, it.parentId, ContentType.MOVIE))
             }
             seriesCats.forEach {
-                catEntities.add(CategoryEntity(it.categoryId, it.categoryName, it.parentId, ContentType.SERIES))
+                add(CategoryEntity(it.categoryId, it.categoryName, it.parentId, ContentType.SERIES))
             }
-            dao.insertCategories(catEntities)
+        }
+        dao.insertCategories(catEntities)
 
-            // Fetch live streams
-            val liveStreams = xtreamApi.getLiveStreams(playerApiUrl, user, pass)
-            val channelEntities = liveStreams.map {
+        val liveStreams = xtreamApi.getLiveStreams(playerApiUrl, user, pass)
+        dao.insertChannels(
+            liveStreams.map {
                 ChannelEntity(
                     streamId = it.streamId,
                     num = it.num ?: 0,
@@ -205,13 +220,49 @@ class IptvRepository(context: Context) {
                     streamIcon = it.streamIcon,
                     epgChannelId = it.epgChannelId,
                     categoryId = it.categoryId ?: "0",
+                    streamType = it.streamType ?: "live",
                     streamUrl = "${server}live/$user/$pass/${it.streamId}.m3u8"
                 )
             }
-            dao.insertChannels(channelEntities)
-        } catch (e: Exception) {
-            // Log or fallback
-        }
+        )
+
+        val vodStreams = xtreamApi.getVodStreams(playerApiUrl, user, pass)
+        dao.insertMovies(
+            vodStreams.map {
+                MovieEntity(
+                    streamId = it.streamId,
+                    name = it.name,
+                    streamIcon = it.streamIcon,
+                    rating = jsonNumber(it.rating),
+                    year = it.releaseDate?.takeIf { date -> date.length >= 4 }?.take(4),
+                    genre = it.genre,
+                    plot = it.plot,
+                    durationSecs = it.durationSecs ?: 0,
+                    categoryId = it.categoryId ?: "0",
+                    containerExtension = it.containerExtension ?: "mp4",
+                    streamUrl = "${server}movie/$user/$pass/${it.streamId}.${it.containerExtension ?: "mp4"}"
+                )
+            }
+        )
+
+        val seriesItems = xtreamApi.getSeries(playerApiUrl, user, pass)
+        dao.insertSeries(
+            seriesItems.map {
+                SeriesEntity(
+                    seriesId = it.seriesId,
+                    name = it.name,
+                    cover = it.cover,
+                    rating = jsonNumber(it.rating),
+                    year = it.releaseDate?.takeIf { date -> date.length >= 4 }?.take(4),
+                    genre = it.genre,
+                    plot = it.plot,
+                    categoryId = it.categoryId ?: "0"
+                )
+            }
+        )
+
+        // Episodes are fetched lazily when a series is opened, avoiding a huge
+        // N-request sync during login while keeping the series catalog complete.
     }
 
     // Load initial curated sample streams for instant demo and testing
