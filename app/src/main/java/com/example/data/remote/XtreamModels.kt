@@ -2,6 +2,7 @@ package com.example.data.remote
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonElement
 
 @JsonClass(generateAdapter = true)
 data class XtreamAuthResponse(
@@ -52,7 +53,7 @@ data class XtreamVodStream(
     @Json(name = "stream_type") val streamType: String? = "movie",
     @Json(name = "stream_id") val streamId: Int,
     @Json(name = "stream_icon") val streamIcon: String?,
-    @Json(name = "rating") val rating: Double? = 0.0,
+    @Json(name = "rating") val rating: JsonElement? = null,
     @Json(name = "category_id") val categoryId: String?,
     @Json(name = "container_extension") val containerExtension: String? = "mp4"
 )
@@ -68,4 +69,33 @@ data class XtreamSeriesItem(
     @Json(name = "releaseDate") val releaseDate: String?,
     @Json(name = "rating") val rating: Double? = 0.0,
     @Json(name = "category_id") val categoryId: String?
+)
+
+
+@JsonClass(generateAdapter = true)
+data class XtreamSeriesInfoResponse(
+    @Json(name = "seasons") val seasons: List<XtreamSeason>? = emptyList(),
+    @Json(name = "episodes") val episodes: Map<String, List<XtreamEpisode>>? = emptyMap()
+)
+
+@JsonClass(generateAdapter = true)
+data class XtreamSeason(
+    @Json(name = "season_number") val seasonNumber: Int,
+    @Json(name = "name") val name: String? = null
+)
+
+@JsonClass(generateAdapter = true)
+data class XtreamEpisode(
+    @Json(name = "id") val id: String? = null,
+    @Json(name = "episode_num") val episodeNum: Int? = 0,
+    @Json(name = "title") val title: String? = null,
+    @Json(name = "container_extension") val containerExtension: String? = "mp4",
+    @Json(name = "info") val info: XtreamEpisodeInfo? = null,
+    @Json(name = "season") val season: Int? = 1
+)
+
+@JsonClass(generateAdapter = true)
+data class XtreamEpisodeInfo(
+    @Json(name = "plot") val plot: String? = null,
+    @Json(name = "duration_secs") val durationSecs: Int? = 0
 )
