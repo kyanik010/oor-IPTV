@@ -148,7 +148,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     init {
         viewModelScope.launch {
             repository.initializeDefaultProfilesIfEmpty()
-            repository.seedDemoContentIfEmpty()
         }
 
         // Auto observe channels when category changes
