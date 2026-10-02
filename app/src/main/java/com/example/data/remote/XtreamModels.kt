@@ -55,7 +55,11 @@ data class XtreamVodStream(
     @Json(name = "stream_icon") val streamIcon: String?,
     @Json(name = "rating") val rating: JsonElement? = null,
     @Json(name = "category_id") val categoryId: String?,
-    @Json(name = "container_extension") val containerExtension: String? = "mp4"
+    @Json(name = "container_extension") val containerExtension: String? = "mp4",
+    @Json(name = "releasedate") val releaseDate: String? = null,
+    @Json(name = "genre") val genre: String? = null,
+    @Json(name = "plot") val plot: String? = null,
+    @Json(name = "duration_secs") val durationSecs: Int? = 0
 )
 
 @JsonClass(generateAdapter = true)
