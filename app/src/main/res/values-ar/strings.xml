@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">نور IPTV</string>
+    <string name="device_id">معرّف الجهاز (Device ID)</string>
+    <string name="copied">تم النسخ إلى الحافظة</string>
+    <string name="activation_code">كود التفعيل</string>
+    <string name="activate">تفعيل الحساب</string>
+    <string name="free_trial">فترة تجريبية مجانية: متبقي 7 أيام</string>
+    <string name="xtream_login">تسجيل دخول Xtream Codes</string>
+    <string name="m3u_login">رابط قائمة M3U</string>
+    <string name="server_url">عنوان السيرفر (URL)</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="playlist_name">اسم القائمة</string>
+    <string name="playlist_url">رابط القائمة M3U/M3U8</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="continue_watching">متابعة المشاهدة</string>
+    <string name="favorites">المفضلة</string>
+    <string name="recently_added">المضاف حديثاً</string>
+    <string name="most_watched">الأكثر مشاهدة</string>
+    <string name="live_tv">القنوات المباشرة</string>
+    <string name="movies">الأفلام</string>
+    <string name="series">المسلسلات</string>
+    <string name="epg">دليل البرامج EPG</string>
+    <string name="search">بحث شامل</string>
+    <string name="settings">الإعدادات</string>
+</resources>

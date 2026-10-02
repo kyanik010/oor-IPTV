@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Noor IPTV</string>
+    <string name="device_id">Device ID</string>
+    <string name="copied">Copied to clipboard</string>
+    <string name="activation_code">Activation Code</string>
+    <string name="activate">Activate</string>
+    <string name="free_trial">Free Trial: 7 Days Remaining</string>
+    <string name="xtream_login">Xtream Codes Login</string>
+    <string name="m3u_login">M3U Playlist URL</string>
+    <string name="server_url">Server URL</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="playlist_name">Playlist Name</string>
+    <string name="playlist_url">Playlist URL</string>
+    <string name="login">Log In</string>
+    <string name="continue_watching">Continue Watching</string>
+    <string name="favorites">Favorites</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="most_watched">Most Watched</string>
+    <string name="live_tv">Live TV</string>
+    <string name="movies">Movies</string>
+    <string name="series">Series</string>
+    <string name="epg">EPG Guide</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+</resources>

@@ -1,0 +1,66 @@
+package com.example.data.remote
+
+import retrofit2.http.GET
+import retrofit2.http.Query
+import retrofit2.http.Url
+
+interface XtreamApiService {
+
+    @GET
+    suspend fun authenticate(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String
+    ): XtreamAuthResponse
+
+    @GET
+    suspend fun getLiveCategories(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("action") action: String = "get_live_categories"
+    ): List<XtreamCategory>
+
+    @GET
+    suspend fun getLiveStreams(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("action") action: String = "get_live_streams",
+        @Query("category_id") categoryId: String? = null
+    ): List<XtreamLiveStream>
+
+    @GET
+    suspend fun getVodCategories(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("action") action: String = "get_vod_categories"
+    ): List<XtreamCategory>
+
+    @GET
+    suspend fun getVodStreams(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("action") action: String = "get_vod_streams",
+        @Query("category_id") categoryId: String? = null
+    ): List<XtreamVodStream>
+
+    @GET
+    suspend fun getSeriesCategories(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("action") action: String = "get_series_categories"
+    ): List<XtreamCategory>
+
+    @GET
+    suspend fun getSeries(
+        @Url url: String,
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("action") action: String = "get_series",
+        @Query("category_id") categoryId: String? = null
+    ): List<XtreamSeriesItem>
+}

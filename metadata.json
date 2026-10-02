@@ -1,0 +1,6 @@
+{
+  "name": "Noor IPTV",
+  "description": "مشغل IPTV احترافي فائق السرعة يدعم Xtream Codes وM3U وAndroid TV والتحكم الكامل بالريموت",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
