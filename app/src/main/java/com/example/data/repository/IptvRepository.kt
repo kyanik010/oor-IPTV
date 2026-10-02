@@ -186,9 +186,7 @@ class IptvRepository(context: Context) {
         dao.clearAllEpisodes()
     }
 
-    private fun jsonNumber(element: com.squareup.moshi.JsonElement?): Double {
-        return element?.toString()?.trim('"')?.toDoubleOrNull() ?: 0.0
-    }
+    private fun jsonNumber(value: Double?): Double = value ?: 0.0
 
     private suspend fun syncXtreamContent(server: String, user: String, pass: String) {
         val playerApiUrl = "${server}player_api.php"
